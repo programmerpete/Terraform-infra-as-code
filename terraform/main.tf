@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_service" "api" {
   template {
     service_account = google_service_account.runtime.email
     containers {
-      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      image = "australia-southeast1-docker.pkg.dev/cloud-security-lab-513900/secure-api/secure-api:v1"
       ports {
         container_port = 8080
       }
@@ -41,3 +41,15 @@ resource "google_cloud_run_v2_service" "api" {
 }
 
 # Deliberately no allUsers Cloud Run invoker IAM binding.
+
+resource "google_artifact_registry_repository" "docker" {
+  project       = var.project_id
+  location      = var.region
+  repository_id = "secure-api"
+  description   = "Private Docker images for the secure API"
+  format        = "DOCKER"
+
+  depends_on = [
+    google_project_service.required
+  ]
+}
