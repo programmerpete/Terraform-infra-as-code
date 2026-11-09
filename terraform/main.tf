@@ -43,6 +43,8 @@ resource "google_cloud_run_v2_service" "api" {
 # Deliberately no allUsers Cloud Run invoker IAM binding.
 
 resource "google_artifact_registry_repository" "docker" {
+  #checkov:skip=CKV_GCP_84:Lab repository uses Google-managed encryption; CMEK is a planned security enhancement.
+
   project       = var.project_id
   location      = var.region
   repository_id = "secure-api"
