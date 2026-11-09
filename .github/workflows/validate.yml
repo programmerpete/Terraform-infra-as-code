@@ -22,3 +22,17 @@ jobs:
           python-version: "3.12"
       - run: pip install -r application/requirements.txt
       - run: PYTHONPATH=application pytest application/tests -q
+security-scan:
+    name: Terraform Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: terraform/
+          framework: terraform
+          soft_fail: true
